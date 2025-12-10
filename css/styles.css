@@ -1,0 +1,443 @@
+:root {
+    /* Core Palette - Premium Dark/Light Base */
+    --bg-primary: #f8f9fa;
+    --text-primary: #1a1a1a;
+    --text-secondary: #666666;
+    --accent-color: #333333;
+
+    /* Dynamic Mood Colors (Default) */
+    --mood-primary: #333;
+    --mood-secondary: #666;
+    --mood-accent: #999;
+
+    /* Typography */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Outfit', sans-serif;
+
+    /* Spacing & Radius */
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 8px;
+    --spacing-unit: 8px;
+}
+
+/* Dark Mode Support (if needed later, or system preference) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-primary: #121212;
+        --text-primary: #ffffff;
+        --text-secondary: #aaaaaa;
+        --accent-color: #ffffff;
+    }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    transition: background-color 0.5s ease, color 0.5s ease;
+    overflow-x: hidden;
+}
+
+#app {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Typography Utilities */
+h1,
+h2,
+h3 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+}
+
+.title-xl {
+    font-size: 3.5rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Mood Wheel Styles */
+.mood-wheel-container {
+    text-align: center;
+    padding-top: 5vh;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+}
+
+.wheel-wrapper {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 0 auto;
+    border-radius: 50%;
+    /* Subtle glow/background */
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+.wheel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    /* Spin animation (optional for idle state) */
+    transition: transform 0.5s ease;
+}
+
+.center-knob {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    z-index: 10;
+}
+
+/* Positioning Wrapper */
+.mood-item-pos {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    /* Transformation is set inline by JS (translate) */
+    z-index: 1;
+}
+
+/* Visual Bubble */
+.mood-item {
+    width: 80px;
+    height: 80px;
+    /* Center the bubble relative to the wrapper pin-point */
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    text-transform: capitalize;
+}
+
+.mood-item:hover {
+    /* Scale up, but keep the centering translate */
+    transform: translate(-50%, -50%) scale(1.15);
+    z-index: 10;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Ensure wrapper z-index bubbles up if needed, or just rely on child */
+.mood-item-pos:hover {
+    z-index: 10;
+}
+
+.mood-tooltip {
+    position: absolute;
+    bottom: -30px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.mood-item:hover .mood-tooltip {
+    opacity: 1;
+}
+
+/* Lookbook Styles */
+.lookbook-container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+.lookbook-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto 40px;
+}
+
+.btn-back {
+    background: none;
+    border: 1px solid currentColor;
+    padding: 8px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-back:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.mood-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.color-palette-display {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    /* Align items vertically */
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+}
+
+.color-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+    font-family: var(--font-body);
+}
+
+.color-control label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.color-control input[type=range] {
+    cursor: pointer;
+}
+
+.color-swatch {
+    width: 100px;
+    height: 120px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: flex-end;
+    padding: 10px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.outfit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.outfit-card {
+    background: #fff;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.outfit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.image-wrapper {
+    position: relative;
+    padding-bottom: 133%;
+    /* 3:4 Aspect Ratio */
+    background: #f0f0f0;
+    overflow: hidden;
+}
+
+.image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.outfit-card:hover .image-wrapper img {
+    transform: scale(1.05);
+}
+
+.color-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    /* Darkens image */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+}
+
+.outfit-card:hover .color-overlay {
+    opacity: 1;
+}
+
+.overlay-content {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    width: 80%;
+}
+
+.bar-chart {
+    display: flex;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.bar {
+    height: 100%;
+}
+
+.card-info {
+    padding: 20px;
+}
+
+.card-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.shop-link {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.shop-link:hover {
+    color: var(--text-primary);
+    border-color: currentColor;
+}
+
+/* Calendar Styles */
+.calendar-container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    cursor: default;
+}
+
+.calendar-day:hover {
+    transform: scale(1.05);
+}
+
+.day-mood-label {
+    font-size: 0.7rem;
+    font-weight: 400;
+    opacity: 0.9;
+    text-transform: capitalize;
+}
+
+.calendar-stats {
+    text-align: center;
+    margin-top: 50px;
+    color: var(--text-secondary);
+}
+
+.btn-calendar-floating {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--text-primary);
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+    z-index: 100;
+}
+
+.btn-calendar-floating:hover {
+    transform: translateY(-5px);
+    background: var(--mood-primary);
+}
