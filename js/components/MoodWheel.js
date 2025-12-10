@@ -42,8 +42,34 @@ window.MoodApp.Components.renderMoodWheel = function (container, onMoodSelect) {
         itemPos.style.transform = `translate(${x}px, ${y}px)`;
 
         // Interaction
-        item.addEventListener('click', () => {
-            onMoodSelect(mood.key);
+        item.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent bubbling issues
+
+            // 1. Visual Cleanup: Hide tooltip immediately
+            const tooltip = item.querySelector('.mood-tooltip');
+            if (tooltip) tooltip.style.display = 'none';
+
+            // 2. Animate Container (Fade out text/other elements)
+            const container = document.querySelector('.mood-wheel-container');
+            container.classList.add('exiting');
+
+            const wheelWrapper = document.querySelector('.wheel-wrapper');
+            wheelWrapper.classList.add('fade-out');
+
+            // 3. Animate Selected Item (Expand to fill screen)
+            // We need to promote this specific item to be fixed/top level to expand correctly
+            // But simply adding the class might work if z-index is handled.
+            // A trick is to clone it to body to ensure it's on top of everything, 
+            // but for simplicity, let's try modifying the existing one first.
+            // We need to break it out of the 'transform' parent context if possible, 
+            // but since parent is just a div with translation, fixed positioning on child overrides it.
+
+            item.classList.add('expanding');
+
+            // 4. Trigger Navigation after animation
+            setTimeout(() => {
+                onMoodSelect(mood.key);
+            }, 750); // Slightly less than CSS transition to avoid flash
         });
 
         // Add tooltip to item

@@ -189,7 +189,36 @@ h3 {
     opacity: 1;
 }
 
-/* Lookbook Styles */
+/* Mood Selection Animation Classes */
+.mood-item.expanding {
+    position: fixed;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(50) !important;
+    /* Huge scale to fill screen */
+    z-index: 9999;
+    transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+    box-shadow: none;
+    /* Remove shadow during expansion for cleaner look */
+}
+
+.wheel-wrapper.fade-out {
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.title-xl,
+.subtitle {
+    transition: opacity 0.5s ease;
+}
+
+.mood-wheel-container.exiting .title-xl,
+.mood-wheel-container.exiting .subtitle {
+    opacity: 0;
+}
+
 .lookbook-container {
     width: 100%;
     min-height: 100vh;
