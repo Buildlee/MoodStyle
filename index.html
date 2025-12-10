@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MoodStyle - Wear Your Mood</title>
     <link rel="stylesheet" href="./css/styles.css">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a1a">
+
     <!-- Google Fonts for Premium Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,6 +35,16 @@
     <script src="./js/components/Calendar.js"></script>
     <!-- 4. Main Entry -->
     <script src="./js/main.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered!', reg.scope))
+                    .catch(err => console.log('SW Fail', err));
+            });
+        }
+    </script>
 </body>
 
 </html>

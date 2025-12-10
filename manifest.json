@@ -1,0 +1,22 @@
+{
+    "name": "MoodStyle",
+    "short_name": "MoodStyle",
+    "description": "Wear Your Mood - Personalized Outfit Recommendations",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#f8f9fa",
+    "theme_color": "#1a1a1a",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "assets/icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "assets/icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ]
+}
