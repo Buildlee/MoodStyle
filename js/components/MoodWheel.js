@@ -19,7 +19,12 @@ window.MoodApp.Components.renderMoodWheel = function (container, onMoodSelect) {
     const wheel = container.querySelector('#moodWheel');
     const moods = window.MoodApp.Utils.getAllMoods();
     const count = moods.length;
-    const radius = 160; // Distance from center
+
+    // Dynamic Radius calculation
+    // Use the actual rendered width of the wrapper, default to 320 logic if not rendered yet
+    const wrapper = container.querySelector('.wheel-wrapper');
+    const containerSize = wrapper ? wrapper.offsetWidth : 300;
+    const radius = (containerSize / 2) * 0.8; // 80% usage of radius
 
     moods.forEach((mood, index) => {
         // Wrapper for positioning

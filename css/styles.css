@@ -477,3 +477,59 @@ h3 {
     transform: translateY(-5px);
     background: var(--mood-primary);
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+
+    /* Title Scaling */
+    .title-xl {
+        font-size: 2.2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+        padding: 0 20px;
+    }
+
+    /* Wheel Scaling */
+    .wheel-wrapper {
+        width: 300px;
+        height: 300px;
+    }
+
+    .mood-item {
+        width: 60px;
+        height: 60px;
+        font-size: 0.8rem;
+    }
+
+    .center-knob {
+        width: 60px;
+        height: 60px;
+        font-size: 0.8rem;
+    }
+
+    /* Lookbook Adjustments */
+    .lookbook-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .mood-title {
+        font-size: 1.8rem;
+    }
+
+    .outfit-grid {
+        grid-template-columns: 1fr;
+        /* Full width cards on mobile */
+        gap: 20px;
+    }
+
+    .btn-calendar-floating {
+        bottom: 20px;
+        right: 20px;
+        padding: 12px 24px;
+        font-size: 0.9rem;
+    }
+}
